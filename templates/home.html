@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cast Comparison</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Google Font - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(45deg, #f3f4f6, #ffffff);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 500;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #common-cast {
+            margin-top: 30px;
+        }
+
+        .form-control, .btn {
+            border-radius: 20px;  // Rounded corners
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+            border-color: #007BFF;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+            @keyframes bounceIn {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-30px);
+        }
+        60% {
+            transform: translateY(-15px);
+        }
+    }
+
+    #common-cast {
+        animation: bounceIn 1s;
+        background-color: #DFF0D8;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .cheerful-image {
+    max-width: 350px;
+    display: block;
+    margin: 0 auto;
+    height: 400px;
+}
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <h2 class="mb-4">Compare Casts <i class="fas fa-film"></i></h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title1"><i class="fas fa-video"></i> TV Show/Movie 1:</label>
+            <input type="text" id="title1" name="title1" required class="form-control" placeholder="Enter the first title...">
+            <select name="category1" id="category1" class="form-control mt-2">
+                <option value="movie">Movie</option>
+                <option value="tv">TV Show</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title2"><i class="fas fa-video"></i> TV Show/Movie 2:</label>
+            <input type="text" id="title2" name="title2" required class="form-control" placeholder="Enter the second title...">
+            <select name="category2" id="category2" class="form-control mt-2">
+                <option value="movie">Movie</option>
+                <option value="tv">TV Show</option>
+            </select>
+        </div>
+
+        <input type="submit" value="Compare" class="btn btn-primary mt-3">
+    </form>
+
+ {% if top_billed_cast1 %}
+    <h3 class="mt-5">Top Cast for {{ title1 }}</h3>
+    <ul>
+    {% for actor_info in top_billed_cast1 %}
+        <li>{{ actor_info.actor }} - {{ actor_info.character }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if top_billed_cast2 %}
+    <h3 class="mt-5">Top Cast for {{ title2 }}</h3>
+    <ul>
+    {% for actor_info in top_billed_cast2 %}
+        <li>{{ actor_info.actor }} - {{ actor_info.character }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+    {% if common_cast %}
+    <div id="common-cast" style="display: none;">
+        {% load static %}
+        <img src="{% static 'baconimdb.png' %}" alt="Cheerful Image" class="img-fluid mx-auto d-block cheerful-image">
+        <h3 class="mt-5">Common Cast</h3>
+        <ul>
+        {% for actor_info in common_cast %}
+            <li>{{ actor_info.actor }} - {{ actor_info.character1 }} ({{ title1 }}), {{ actor_info.character2 }} ({{ title2 }})</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#common-cast').slideDown(1000);  // Slide down animation for 1 second
+    });
+</script>
+<script>
+    $(function() {
+        function getAutocompleteSource(category) {
+            return function(request, response) {
+                $.getJSON("/autocomplete/", {
+                    term: request.term,
+                    category: category
+                }, response);
+            };
+        }
+
+        $("#title1").autocomplete({
+            source: getAutocompleteSource($('#category1').val())
+        });
+
+        $('#category1').change(function() {
+            $("#title1").autocomplete("option", "source", getAutocompleteSource($(this).val()));
+        });
+
+        $("#title2").autocomplete({
+            source: getAutocompleteSource($('#category2').val())
+        });
+
+        $('#category2').change(function() {
+            $("#title2").autocomplete("option", "source", getAutocompleteSource($(this).val()));
+        });
+
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
