@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-xi1*w9-$i(0m+=yo7vmo7((k-bq7p)0uc@oa6p4liastax&d*d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'humble-mammal-patient.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', 'humble-mammal-patient.ngrok-free.app', 'cast-comparison-ee64bfddf8eb.herokuapp.com']
 
 
 # Application definition
@@ -141,3 +142,6 @@ CORS_ALLOWED_ORIGINS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+load_dotenv()
+TMDB_API_KEY = os.getenv('TMDB_API_KEY')

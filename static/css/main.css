@@ -1,0 +1,73 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(45deg, #f3f4f6, #ffffff);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+ #common-cast {
+     margin-top: 30px;
+ }
+
+.form-control, .btn {
+    border-radius: 20px;  // Rounded corners
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    border-color: #007BFF;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.btn {
+    margin: 5px;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #555;
+    color: #fff;
+}
+@keyframes bounceIn {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+#common-cast {
+    animation: bounceIn 1s;
+    background-color: #DFF0D8;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.cheerful-image {
+    max-width: 350px;
+    display: block;
+    margin: 0 auto;
+    height: 400px;
+}

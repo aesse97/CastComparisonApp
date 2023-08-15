@@ -1,48 +1,25 @@
-# Python files
 *.pyc
 *.pyo
 *.egg-info/
 __pycache__/
-*.egg-info/
-
-# Database
 *.sqlite3
 *.sqlite3-journal
 db.sqlite3
-
-# Cache and logs
 *.log
 *.pot
 *.cache/
 *.pem
 *.pid
-
-# Backup files
 *~
 *.bak
-
-# Django
 *.local.py
-
-# Virtual environment
 venv/
 ENV/
-
-# Node modules (if using Node.js alongside Django)
 node_modules/
-
-# IDE Specific
 *.idea/
 .vscode/
-
-# macOS specific
 .DS_Store
-
-# Other files and directories
 *.swp
 *.swo
 *.swn
-
-# Static files collected for deployment
-# Uncomment the next line if you want to exclude the static files from the git repo
-# static/
+.env
